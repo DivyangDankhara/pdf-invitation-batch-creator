@@ -554,8 +554,14 @@ function Designer(props: {
             deleteField={props.deleteField}
           />
         ) : (
-          <div className="muted-panel">Select a text field.</div>
+          <div className="muted-panel">Select a field from the page or list.</div>
         )}
+        <FieldList
+          fields={props.fields}
+          selectedFieldId={props.selectedFieldId}
+          setSelectedFieldId={props.setSelectedFieldId}
+          setSelectedPageIndex={props.setSelectedPageIndex}
+        />
         {props.validationError ? <div className="soft-error">{props.validationError}</div> : null}
       </aside>
     </div>
@@ -633,7 +639,7 @@ function PdfCanvas({
       <div
         className="pdf-canvas"
         style={{ width: displayWidth, height: displayHeight }}
-        onMouseDown={() => setSelectedFieldId(null)}
+        onPointerDown={() => setSelectedFieldId(null)}
       >
         <img src={pageImageUrl(sessionId, page.pageIndex)} alt={`Page ${page.pageIndex + 1}`} />
         {fields.map((field) => (
@@ -644,16 +650,25 @@ function PdfCanvas({
             size={{ width: field.width * scale, height: field.height * scale }}
             minWidth={40}
             minHeight={18}
-            onDragStop={(_, data) => updateField(field.id, { x: data.x / scale, y: data.y / scale })}
+            onMouseDown={(event) => {
+              event.stopPropagation();
+              setSelectedFieldId(field.id);
+            }}
+            onDragStop={(_, data) => {
+              setSelectedFieldId(field.id);
+              updateField(field.id, { x: data.x / scale, y: data.y / scale });
+            }}
             onDragStart={() => setSelectedFieldId(field.id)}
-            onResizeStop={(_, __, ref, ___, position) =>
+            onResizeStart={() => setSelectedFieldId(field.id)}
+            onResizeStop={(_, __, ref, ___, position) => {
+              setSelectedFieldId(field.id);
               updateField(field.id, {
                 x: position.x / scale,
                 y: position.y / scale,
                 width: ref.offsetWidth / scale,
                 height: ref.offsetHeight / scale,
-              })
-            }
+              });
+            }}
           >
             <div
               role="button"
@@ -699,6 +714,11 @@ function FieldEditor({
 }) {
   return (
     <div className="editor-form">
+      <div className="selected-field-card">
+        <span>Selected field</span>
+        <strong>{field.column}</strong>
+        <small>Page {field.pageIndex + 1}</small>
+      </div>
       <label className="field-label">
         Column
         <select value={field.column} onChange={(event) => updateField(field.id, { column: event.target.value })}>
@@ -747,6 +767,44 @@ function FieldEditor({
         <Trash2 size={17} /> Delete field
       </button>
     </div>
+  );
+}
+
+function FieldList({
+  fields,
+  selectedFieldId,
+  setSelectedFieldId,
+  setSelectedPageIndex,
+}: {
+  fields: TemplateField[];
+  selectedFieldId: string | null;
+  setSelectedFieldId: (id: string | null) => void;
+  setSelectedPageIndex: (index: number) => void;
+}) {
+  if (!fields.length) {
+    return <div className="muted-panel">Added fields will show here.</div>;
+  }
+
+  return (
+    <section className="field-list-panel">
+      <h3>Added fields</h3>
+      <div className="field-list">
+        {fields.map((field, index) => (
+          <button
+            key={field.id}
+            className={field.id === selectedFieldId ? "field-list-item active" : "field-list-item"}
+            onClick={() => {
+              setSelectedPageIndex(field.pageIndex);
+              setSelectedFieldId(field.id);
+            }}
+            type="button"
+          >
+            <span>{index + 1}. {field.column}</span>
+            <small>Page {field.pageIndex + 1}</small>
+          </button>
+        ))}
+      </div>
+    </section>
   );
 }
 

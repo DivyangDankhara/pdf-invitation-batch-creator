@@ -477,6 +477,29 @@ th {
   display: grid;
 }
 
+.selected-field-card {
+  background: #f7f8f9;
+  border: 1px solid #d8dce0;
+  border-radius: 8px;
+  display: grid;
+  gap: 3px;
+  margin-bottom: 14px;
+  padding: 10px 12px;
+}
+
+.selected-field-card span,
+.selected-field-card small,
+.field-list-item small {
+  color: #687078;
+  font-size: 12px;
+}
+
+.selected-field-card strong {
+  color: #20242a;
+  font-size: 15px;
+  overflow-wrap: anywhere;
+}
+
 .two-col {
   display: grid;
   gap: 10px;
@@ -496,6 +519,47 @@ th {
   border-radius: 8px;
   color: #66707a;
   padding: 18px;
+}
+
+.field-list-panel {
+  border-top: 1px solid #e0e4e7;
+  margin-top: 16px;
+  padding-top: 14px;
+}
+
+.field-list-panel h3 {
+  color: #38424d;
+  font-size: 14px;
+  margin: 0 0 8px;
+}
+
+.field-list {
+  display: grid;
+  gap: 7px;
+}
+
+.field-list-item {
+  align-items: center;
+  background: #ffffff;
+  border: 1px solid #d8dce0;
+  border-radius: 7px;
+  color: #26323f;
+  display: grid;
+  gap: 8px;
+  grid-template-columns: minmax(0, 1fr) auto;
+  min-height: 38px;
+  padding: 8px 10px;
+  text-align: left;
+}
+
+.field-list-item span {
+  overflow-wrap: anywhere;
+}
+
+.field-list-item.active {
+  background: #fff7e3;
+  border-color: #e0b84f;
+  box-shadow: 0 0 0 2px rgba(224, 184, 79, 0.16);
 }
 
 .preview-image-wrap {
