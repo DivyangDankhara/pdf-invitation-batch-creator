@@ -7,8 +7,8 @@ import fitz  # PyMuPDF
 # =======================
 # USER SETTINGS
 # =======================
-TEMPLATE_PDF = "invitation_template_Two.pdf"
-EXCEL_FILE   = "Two Ramgadh.xlsx"         # uses first column unless NAME_COLUMN set
+TEMPLATE_PDF = "invitation_template.pdf"
+EXCEL_FILE   = "names.xlsx"         # uses first column unless NAME_COLUMN set
 NAME_COLUMN  = None                 # e.g. "Full Name" or None
 
 # Placement & style (values you provided; measured from BOTTOM-LEFT like before)
@@ -21,8 +21,8 @@ FONT_COLOR_HEX = "#FF0000"
 FONT_TTF_PATH = "NotoSansGujarati-Regular.ttf"
 
 # Output
-OUTPUT_DIR = "output\Two Ramgadh"
-FILE_NAME_FORMAT = "{name} From અશ્વીનભાઇ ડાંખરા પરિવાર.pdf"
+OUTPUT_DIR = "output\\"
+FILE_NAME_FORMAT = "{name} from અશ્વીનભાઇ ડાંખરા પરિવાર.pdf"
 
 # Text placement behavior
 CENTER_TEXT = False   # you asked for LEFT-ALIGNED at (x,y); keep this False
